@@ -7,7 +7,6 @@ import java.util.logging.Logger;
 
 
 public class DBInterface {
-    
 
     public static boolean isTableExist(Connection con, String tableName, ArrayList<String> log){
         try {            
@@ -36,12 +35,7 @@ public class DBInterface {
         }
     }
     
-     /**
-     * löschet die Tabelle
-     * @param con Verbindung
-     * @param tableName Tabelle
-     * @param log LogBuch     
-    */
+
     public static void dropTable(Connection con, String tableName, ArrayList<String> log){
         try {
             Statement stmt = con.createStatement();       
@@ -52,11 +46,7 @@ public class DBInterface {
         }
     }
     
-     /**
-     * liefert das nächste Id für einer Eintrag in die Tabelle zurück
-     * @param tableName Tabelle    
-     * @return int
-    */
+
      public static int getNextId(String tableName){
         try {
             Connection con = DBConnector.getInstance().getConnection();
@@ -75,11 +65,7 @@ public class DBInterface {
         }
     }
      
-     /**
-     * liefert ResultSet zurück   
-     * @param str
-     * @return ResultSet
-    */
+
      public static ResultSet getResultSet(String str){
         try {
             Connection con = DBConnector.getInstance().getConnection();
@@ -92,10 +78,7 @@ public class DBInterface {
         }
     } 
      
-     /**
-     * führt einen Statement aus.
-     * @param str     
-    */ 
+
     public static void executeStatement(String str){
         try {
              Connection con = DBConnector.getInstance().getConnection();      
@@ -106,7 +89,11 @@ public class DBInterface {
         } 
     } 
     
-
+     /**
+     * erzeugt die Scheme mit allen notwendigen Tabellen.
+     * @param con Verbindung
+     * @param log LogBuch
+    */
     public static void createHotelTables(Connection con, ArrayList<String> log){        
         try{
         
@@ -136,7 +123,7 @@ public class DBInterface {
                 "fullname             VARCHAR(40)     NOT NULL,\n" +
                 "CONSTRAINT           PK_ID           PRIMARY KEY (id)", log);
 
-            Statement stmt = con.createStatement();
+                Statement stmt = con.createStatement();
             stmt.executeUpdate("INSERT INTO state (abbreviation, fullname)\n" +
                     "VALUES ('AA', 'Addis Ababa'),\n" +
                     "       ('AF', 'Afar'),\n" +
@@ -149,7 +136,6 @@ public class DBInterface {
                     "       ('SN', 'Southern Nations, Nationalities, and Peoples'' Region'),\n" +
                     "       ('SM', 'Somali'),\n" +
                     "       ('TI', 'Tigray');");
-
 
         }
         
@@ -250,12 +236,12 @@ public class DBInterface {
                 "    description             VARCHAR(40)     NOT NULL ,\n" +
                 "    PRIMARY KEY (id)", log);
 
-            Statement stmt = con.createStatement();
+                Statement stmt = con.createStatement();
             stmt.executeUpdate("INSERT INTO pricetype (description)\n" +
-                    "VALUES ('Per Use'),\n" +
-                    "       ('Per Day'),\n" +
-                    "       ('Per Person'),\n" +
-                    "       ('Per Person & Day');");
+                    "VALUES ('Room Rate'),\n" +
+                    "       ('Full Board'),\n" +
+                    "       ('Half Board'),\n" +
+                    "       ('All-Inclusive');");
 
         }
 
@@ -291,7 +277,10 @@ public class DBInterface {
         }
     }
     
-
+    /**
+     * liefert Statistik "Age of guests per year"
+     * @return ResultSet
+    */
     public static ResultSet getFirstStatistic(){
         return getResultSet("select Year(fromDate) as Year,\n" +
                             "MAX(IF( RIGHT(fromDate, 5)<RIGHT(birthdate, 5), YEAR(fromDate)-YEAR(birthdate)-1,YEAR(fromDate)-YEAR(birthdate))) as max,\n" +
@@ -301,7 +290,10 @@ public class DBInterface {
                             "group by Year(fromDate)");
     }
     
-
+    /**
+     * liefert Statistik "Number of guests each province and abroad"
+     * @return ResultSet
+    */
     public static ResultSet getSecondStatistic(){
        return getResultSet("select YEAR(fromDate) as year, fullname as state, count(*) as together\n" +
                             "from state join address on address.state = state.id\n" +
@@ -310,14 +302,20 @@ public class DBInterface {
                             "group by YEAR(fromDate), fullname ");
     }
     
-
+      /**
+     * liefert Statistik "Number of guests per year and days of bookings"
+     * @return ResultSet
+    */
     public static ResultSet getSixthStatistic(){
        return getResultSet("SELECT YEAR(fromDate) as year, MIN(DATEDIFF(toDate,fromDate)) as min, MAX(DATEDIFF(toDate,fromDate)) as max, ROUND(AVG(DATEDIFF(toDate,fromDate)),1) as avg, count(*) as guest \n" +
                            "FROM order_room join guest on (order_room.guest = guest.id) \n" +
                            "GROUP BY YEAR(fromDate)");
     }
     
-
+      /**
+     * liefert Statistik "Overview of all guests"
+     * @return ResultSet
+    */
     public static ResultSet getSeventhStatistic(){
        return getResultSet( "SELECT guest.id, GROUP_CONCAT(\" \", surname, \" \", name) as pers, fromDate, toDate, DATEDIFF(IF(YEAR(fromDate)<>YEAR(toDate),CURRENT_DATE,toDate),fromDate) as days \n" +
                             "FROM order_room join guest on order_room.guest = guest.id\n" +

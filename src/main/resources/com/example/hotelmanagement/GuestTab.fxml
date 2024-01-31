@@ -81,12 +81,13 @@
         <Button fx:id="removeButt" disable="true" mnemonicParsing="false" onAction="#handleRemoveGuestAction" prefHeight="30.0" prefWidth="90.0" style="-fx-background-color: #2196F3;" text="Remove" GridPane.columnIndex="2" GridPane.margin="$x3" GridPane.rowIndex="5" GridPane.valignment="TOP" />
         <ImageView id="addOrange" fx:id="addPersonButt" onMouseClicked="#addPerson" pickOnBounds="true" scaleX="0.9" scaleY="0.9" GridPane.columnIndex="3" GridPane.rowIndex="3">
           <image>
-            <Image preserveRatio="true" smooth="true" url="@../images/addOrange.png" />
+            <Image preserveRatio="true" smooth="true" url="@images/rubbishOrange.png" />
+
           </image>
         </ImageView>
         <ImageView id="rubbishOrange" fx:id="removePersonButt" onMouseClicked="#removePerson" pickOnBounds="true" scaleX="0.9" scaleY="0.9" GridPane.columnIndex="3" GridPane.rowIndex="4" GridPane.valignment="TOP">
           <image>
-            <Image preserveRatio="true" smooth="true" url="@../images/rubbishOrange.png" />
+            <Image preserveRatio="true" smooth="true" url="@images/rubbishOrange.png" />
           </image>
           <GridPane.margin>
             <Insets top="10.0" />

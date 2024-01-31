@@ -68,7 +68,7 @@ public class RoomTabController {
             s.setScene(scene);   
             s.show();
         } else {
-
+            // Die Formularsdaten sind korrekt. Sie werden in die Datenbank eingetragen.
             int nextId;
             if (roomCBox.getValue().equals("New Room")){   
                   nextId = DBInterface.getNextId("room");

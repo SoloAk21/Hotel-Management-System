@@ -252,7 +252,8 @@ public class PersonTabController {
         birthdayDatePicker.setConverter(converter);
       //  birthdayDatePicker.alignmentProperty().set(Pos.CENTER);
 
-        birthdayDatePicker.getStylesheets().add("com.example.hotelmanagement.DatePicker.css");        
+        birthdayDatePicker.getStylesheets().add(getClass().getResource("DatePicker.css").toExternalForm());
+
         gridpane.add(birthdayDatePicker, 1, 4);
         GridPane.setMargin(birthdayDatePicker, new Insets(0,0,0,15));
         birthdayDatePicker.setMinWidth(105);
